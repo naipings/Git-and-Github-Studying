@@ -1,0 +1,46 @@
+2.2两种常规使用方式
+
+2.2.1、基于http协议
+
+a.创建一个空目录，然后进入这个目录。
+mkdir 目录名
+cd ./目录名
+
+b.使用clone指令克隆线上仓库到本地
+	指令：git clone 线上仓库地址
+
+c.在仓库上做对应的操作（提交到暂存区、提交本地仓库、提交线上仓库、拉取线上仓库）
+前面两个已经讲过
+
+(1)提交线上仓库：
+	指令：git push
+
+注意直接使用git push会报错
+在首次往线上仓库提交内容的时候出现了403的致命错误，原因是：不是任何人都可以往线上仓库提交内容，必须需要鉴权。
+
+（鉴权操作完了才发现，这种方法在2021.8.13过后就失效了）
+（所以我们不再使用鉴权操作，直接使用GitHub token令牌操作）（令牌操作可以见CSDN，也可以见我下面的粗略总结）
+
+鉴权操作（已经不需要了）：（即：需要修改隐藏文件“git/config”文件的内容）
+	(1)先打开git/config文件（使用记事本打开即可）
+	(2)打开过后，我们需要将里面：
+[remote "origin"]
+	url = https://github.com/用户名/仓库名.git
+修改为：
+[remote "origin"]
+	url = https://用户名:密码@github.com/用户名/仓库名.git
+然后记得保存。
+在进行完鉴权操作过后，再使用git push
+（注意：鉴权操作只需要进行一次就行了，除非重新创建了一个仓库）
+
+
+GitHub token令牌申请及使用：
+登录GitHub网站——>点击右上角头像里面的Settings——>然后找到左侧列表最下面的Developer settings——>找到Personal access tokens——>选择里面的Tokens(classic)——>然后选择右上角Generate new token里面的Generate new token(classic)——>然后进去设置token有效期，访问权限等——>生成令牌，并保存——>把token直接添加的远程仓库链接中，这样可以避免同一仓库每次提交代码都要输入token了（添加方法：在git命令行中输入 git remote set-url origin https://得到的token令牌@github.com/用户名/仓库名.git）——>之后就可以使用git push上传代码。
+(注：要使用token从命令行访问仓库，请选择repo
+   要使用token从命令行删除仓库，请选择delete_repop
+   其他根据需要进行勾选
+   然后生成令牌过后，记得把token保存下来，因为 你再次刷新网页的时候，你已经没有办法看到它了。)
+
+
+2.2.2、基于ssh协议
+
